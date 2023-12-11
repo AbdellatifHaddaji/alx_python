@@ -1,8 +1,4 @@
 def print_matrix_integer(matrix=[[]]):
-    if not matrix:
-        print("Empty matrix")
-        return
-
     for row in matrix:
         for i, num in enumerate(row):
             # Use str.format() to print integers
