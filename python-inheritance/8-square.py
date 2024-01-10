@@ -1,41 +1,70 @@
-class BaseGeometry:
-    """Base class with an integer validator method"""
+"""
+A module that have an empty class with override to dir() method
+"""
 
-    def area(self):
-        """Raise an exception indicating that area() is not implemented"""
-        raise Exception("area() is not implemented")
+class MetaClass(type):
+    """
+    Override dir() method to execlude __init__subclass__
+    """
+    def __dir__(cls):
+        return [attribute for attribute in super().__dir__() if attribute != '__init_subclass__']
+
+
+class BaseGeometry(metaclass=MetaClass):
+    """
+    BaseGeometry class that uses the overriden dir() method 
+    """
+    
+    def __dir__(cls):
+        return [attribute for attribute in super().__dir__() if attribute != '__init_subclass__']
 
     def integer_validator(self, name, value):
-        """Validate that value is an integer and greater than 0"""
+        """
+        A public method that validates value:
+        - If value is not an integer: raise a TypeError exception, 
+          with the message <name> must be an integer
+        - If value is less or equal to 0: raise a ValueError exception with the 
+         message <name> must be greater than 0
+        """
         if not isinstance(value, int):
-            raise TypeError(f"{name} must be an integer")
-        if value <= 0:
-            raise ValueError(f"{name} must be greater than 0")
+            raise TypeError("{} must be an integer".format(name))
+        elif value <= 0:
+            raise ValueError("{} must be greater than 0".format(name))
+        
+BaseGeometry = __import__('5-base_geometry').BaseGeometry
 
+        
 class Rectangle(BaseGeometry):
-    """Rectangle class inheriting from BaseGeometry"""
-
+    """
+    A class that inherits from BaseGeometry
+    """
     def __init__(self, width, height):
-        self.integer_validator("width", width)
-        self.integer_validator("height", height)
+        """
+        Instantiate with width and height
+        """
         self.__width = width
         self.__height = height
-
-    def __str__(self):
-        """Return a string representation of the rectangle"""
-        return f"[Rectangle] {self.__width}/{self.__height}"
-
+        self.integer_validator("width", width)
+        self.integer_validator("height", height)
     def area(self):
-        """Compute the area of the rectangle"""
-        return self.__width * self.__height
+        """
+        A public method that return area of rectangle
+        """
+        return self.__height * self.__width
+    def __str__(self):
+        return ("[Rectangle] {}/{}".format(self.__width,self.__height))
+    
+Rectangle = __import__('7-rectangle').Rectangle
 
 class Square(Rectangle):
-    """Square class inheriting from Rectangle"""
-
+    """
+    A subclass of rectangle class
+    """
     def __init__(self, size):
-        super().__init__(size, size)
+        self.__size = size
         self.integer_validator("size", size)
-
-    def __str__(self):
-        """Return a string representation of the square"""
-        return f"[Square] {self._Rectangle__width}/{self._Rectangle__height}"
+    def area(self):
+        """
+        A public method that return area of squar
+        """
+        return self.__size ** 2
