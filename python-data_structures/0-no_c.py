@@ -1,12 +1,7 @@
 def no_c(my_string):
-    new_string = ''
-    for char in my_string:
-        # Exclude 'c' and 'C' characters
-        if char not in ('c', 'C'):
-            new_string += char
-    return new_string
+    return ''.join([i for i in my_string if i not in 'cC'])
 
-# Test cases
-print(no_c("Holberton School"))
-print(no_c("Chicago"))
-print(no_c("C is fun!"))
+if __name__ == "__main__":
+    print(no_c("Holberton School"))
+    print(no_c("abdellatif"))
+    print(no_c("C is fun!"))
